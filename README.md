@@ -1,6 +1,6 @@
 # Go Observer
 
-an implementation of Observer pattern on go using generics.
+Implementation of the observer pattern using generics.
 
 ## Installation
 
