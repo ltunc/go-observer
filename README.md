@@ -2,23 +2,52 @@
 
 an implementation of Observer pattern on go using generics.
 
+## Installation
+
+    go get github.com/ltunc/go-observer
+
 ## Usage
 
 ```
-type Event string
+package main
 
-type PrintObserver struct {
-    //...
+import (
+	"fmt"
+	"github.com/ltunc/go-observer/observer"
+)
+
+func main() {
+	es := &observer.Subject[Event]{}
+	p := &Printer{}
+	es.Subscribe(p)
+	f := &Fancy{}
+	es.Subscribe(f)
+	for i := 1; i < 4; i++ {
+		e := Event{name: fmt.Sprintf("e%d", i)}
+		es.Fire(e)
+	}
 }
-func (o *EventObserver) Notify(ev Event) {
-    fmt.Println(ev)
+
+type Event struct {
+	name string
 }
-func process() {
-    subj := &Subject[Event]{}
-    priter := &PrintObserver{}
-    subj.Subscribe(priter)
-    subj.Fire(Event("ev1"))
-    subj.Fire(Event("ev2"))
-    subj.Unsubscribe(priter)
+
+func (e Event) Name() string {
+	return e.name
 }
+
+type Printer struct {
+}
+
+func (p *Printer) Notify(ev Event) {
+	fmt.Println(ev.Name())
+}
+
+type Fancy struct {
+}
+
+func (r *Fancy) Notify(ev Event) {
+	fmt.Printf("Event '%s', hurray!\n", ev.Name())
+}
+
 ```
