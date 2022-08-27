@@ -4,11 +4,11 @@ Implementation of the observer pattern using generics.
 
 ## Installation
 
-    go get github.com/ltunc/go-observer
+    go get github.com/ltunc/go-observer@latest
 
 ## Usage
 
-```
+```go
 package main
 
 import (
