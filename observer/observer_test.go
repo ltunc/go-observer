@@ -59,7 +59,7 @@ func TestSubject_Subscribe(t *testing.T) {
 		observers []Observer[testEvent]
 	}
 	type args struct {
-		obs Observer[testEvent]
+		obs []Observer[testEvent]
 	}
 	tests := []struct {
 		name   string
@@ -72,7 +72,7 @@ func TestSubject_Subscribe(t *testing.T) {
 			fields{
 				[]Observer[testEvent]{},
 			},
-			args{&mockObserver{name: "M1"}},
+			args{[]Observer[testEvent]{&mockObserver{name: "M1"}}},
 			[]Observer[testEvent]{&mockObserver{name: "M1"}},
 		},
 		{
@@ -80,8 +80,16 @@ func TestSubject_Subscribe(t *testing.T) {
 			fields{
 				[]Observer[testEvent]{&mockObserver{name: "M5"}},
 			},
-			args{&mockObserver{name: "M10"}},
+			args{[]Observer[testEvent]{&mockObserver{name: "M10"}}},
 			[]Observer[testEvent]{&mockObserver{name: "M5"}, &mockObserver{name: "M10"}},
+		},
+		{
+			"multiple at once",
+			fields{
+				[]Observer[testEvent]{&mockObserver{name: "M5"}},
+			},
+			args{[]Observer[testEvent]{&mockObserver{name: "M10"}, &mockObserver{name: "M7"}}},
+			[]Observer[testEvent]{&mockObserver{name: "M5"}, &mockObserver{name: "M10"}, &mockObserver{name: "M7"}},
 		},
 	}
 	for _, tt := range tests {
@@ -89,7 +97,7 @@ func TestSubject_Subscribe(t *testing.T) {
 			s := &Subject[testEvent]{
 				observers: tt.fields.observers,
 			}
-			s.Subscribe(tt.args.obs)
+			s.Subscribe(tt.args.obs...)
 			if got := s.observers; !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Subscribe() got observers %v, want %v", got, tt.want)
 			}

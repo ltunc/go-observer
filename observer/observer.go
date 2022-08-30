@@ -14,11 +14,11 @@ type Subject[E any] struct {
 	sync.Mutex
 }
 
-// Subscribe adds the observer to the list of subscribers
-func (s *Subject[E]) Subscribe(obs Observer[E]) {
+// Subscribe adds the observer(s) to the list of subscribers
+func (s *Subject[E]) Subscribe(obs ...Observer[E]) {
 	s.Lock()
 	defer s.Unlock()
-	s.observers = append(s.observers, obs)
+	s.observers = append(s.observers, obs...)
 }
 
 // Unsubscribe removes the observer from the list of subscribers
