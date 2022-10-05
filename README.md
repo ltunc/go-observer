@@ -1,5 +1,7 @@
 # Go Observer
 
+[![goreportcard](https://goreportcard.com/badge/github.com/ltunc/go-observer)](https://goreportcard.com/report/github.com/ltunc/go-observer)
+
 Implementation of the observer pattern using generics.
 
 ## Installation
